@@ -18,14 +18,16 @@ position:relative;
 
 <script type="text/javascript">
 var canvas = null;
-var img = null;
+var img = null,image=null;
 var ctx = null;
 var imageReady = false;
-var tt;
+var tt,weapon=0;
 var d;
 var hero={
 x:100,
 y:100,
+axe:0,
+axe_x:0,
 frame:0,
 left:function()
   {
@@ -48,6 +50,8 @@ function onload()
   ctx = canvas.getContext("2d");
   img = new Image();
   img.src = 'sprites/main.png';
+  image=new Image();
+  image.src='sprites/attack.png';
   img.onload = loaded();
   hero.x=100;
 
@@ -70,7 +74,17 @@ window.addEventListener("keypress", function(event){
     hero.right();
     d=2;
     }
+    if(key==32 && d==2)
+    {
+      // WEAPONS
+
+      weapon=1;
+      hero.axe=0;
+      hero.axe_x=hero.x +10;
+    }
+   
   });
+
 window.addEventListener("keyup",function(){ d=3;});
 function redraw()
  {
@@ -92,6 +106,21 @@ function redraw()
     {
       ctx.drawImage(img,35+95,0,30,35,hero.x,hero.y,35,35);
     }
+  }
+  if(weapon>0)
+  {
+       ctx.drawImage(image,82*hero.axe,440,76,100,hero.axe_x,hero.y,100,75);
+       if(hero.axe<=8)
+        {
+          hero.axe++;
+          hero.axe_x+=5;
+        }
+      else
+      {
+        hero.axe=0;
+        weapon=0;
+      }
+   
   }
 }
 
