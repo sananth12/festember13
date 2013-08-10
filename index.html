@@ -13,7 +13,7 @@ position:relative;
 
 <body onload="onload()">
 
-<canvas id="myCanvas" class="myCanvas" width="900" height="500" align="center">
+<canvas id="myCanvas" class="myCanvas" width="500" height="500" align="center">
 </canvas>
 
 <script type="text/javascript">
@@ -22,7 +22,7 @@ var img = null,image=null;
 var ctx = null;
 var imageReady = false;
 var tt,weapon=0;
-var d;
+var d,dir;
 var hero={
 x:100,
 y:100,
@@ -31,14 +31,14 @@ axe_x:0,
 frame:0,
 left:function()
   {
-  hero.x-=2;
+  hero.x-=3;
   hero.frame+=1;
   if(hero.frame>=2)
   hero.frame=0;
   },
 right:function()
   {
-  hero.x+=2;
+  hero.x+=3;
   hero.frame+=1;
   if(hero.frame>=2)
   hero.frame=0;
@@ -58,7 +58,7 @@ function onload()
  }
 function loaded() {
   imageReady = true;
-  tt=setInterval(redraw,150);
+  tt=setInterval(redraw,140);
 }
 
 window.addEventListener("keypress", function(event){
@@ -74,18 +74,23 @@ window.addEventListener("keypress", function(event){
     hero.right();
     d=2;
     }
-    if(key==32 && d==2)
+    if( (key==32 && d==2 )|| (key==32 &&d==1) )
     {
       // WEAPONS
 
       weapon=1;
       hero.axe=0;
-      hero.axe_x=hero.x +10;
+      
+      dir= ( d==2?1:-1);
+
+      hero.axe_x=hero.x + (28*dir);
     }
+    
    
   });
 
 window.addEventListener("keyup",function(){ d=3;});
+
 function redraw()
  {
   ctx.fillStyle = '#FFFFFF';
@@ -109,19 +114,24 @@ function redraw()
   }
   if(weapon>0)
   {
-       ctx.drawImage(image,82*hero.axe,440,76,100,hero.axe_x,hero.y,100,75);
-       if(hero.axe<=8)
+       ctx.drawImage(image,82*hero.axe,440,76,100,hero.axe_x,hero.y,50,25);
+       if(hero.axe<8)
         {
           hero.axe++;
-          hero.axe_x+=5;
+          hero.axe_x+=20*dir;
         }
       else
       {
         hero.axe=0;
-        weapon=0;
+        hero.axe_x+=20*dir;
+        
       }
-   
+      
+      if(hero.axe_x>canvas.width)
+        weapon=0;
+
   }
+
 }
 
 </script>
