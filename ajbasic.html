@@ -27,7 +27,10 @@ x:100,
 y:0,
 left:function()
 	{
-	hero.x-=5;
+	hero.x-=1;
+	frame+=1;
+	if(frame>=2)
+	frame=0;
 	}
 }
 function onload() 
@@ -52,6 +55,7 @@ window.addEventListener("keypress", function(event){
 	if(key==97)
 	{
 	hero.left();
+	
 	}
 	});
 function redraw()
@@ -64,11 +68,11 @@ function redraw()
   
 
 	ctx.drawImage(img,(35*frame)+95,32,30,35,hero.x,hero.y,35,35);
-	if(frame>=2)
+	/*if(frame>=2)
 	frame=0;
 	else
 	frame++;
-
+*/
   }				  
 }		
 </script> 
