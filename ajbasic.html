@@ -21,24 +21,25 @@ var canvas = null;
 var img = null;
 var ctx = null;
 var imageReady = false;
-var tt,frame=0;
+var tt;
 var d;
 var hero={
-x:100,
+x:200,
+frame:0,
 y:0,
 left:function()
 	{
-	hero.x-=1;
-	frame+=1;
-	if(frame>=2)
-	frame=0;
+	hero.x-=3;
+	hero.frame+=1;
+	if(hero.frame>=2)
+	hero.frame=0;
 	},
 right:function()
 	{
-	hero.x+=1;
-	frame+=1;
-	if(frame>=2)
-	frame=0;
+	hero.x+=3;
+	hero.frame+=1;
+	if(hero.frame>=2)
+	hero.frame=0;
 	}
 }
 function onload() 
@@ -54,7 +55,7 @@ function onload()
  }
 function loaded() {
   imageReady = true;
-  tt=setInterval(redraw,250);
+  tt=setInterval(redraw,100);
 }
 
 window.addEventListener("keypress", function(event){
@@ -80,11 +81,11 @@ function redraw()
   {
 	if(d==1)
 	{
-	ctx.drawImage(img,(35*frame)+95,32,30,35,hero.x,hero.y,35,35);
+	ctx.drawImage(img,(35*hero.frame)+95,32,30,35,hero.x,hero.y,35,35);
 	}
 	else if(d==2)
 	{
-	ctx.drawImage(img,(35*frame)+95,64,30,35,hero.x,hero.y,35,35);
+	ctx.drawImage(img,(35*hero.frame)+95,64,30,35,hero.x,hero.y,35,35);
 	}
   }				  
 }		
