@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html>
+<body>
+
+<canvas id="myCanvas" width="500" height="500" style="border:1px solid #d3d3d3;">
+</canvas>
+
+<script>
+
+var c=document.getElementById("myCanvas");
+var ctx=c.getContext("2d");
+var mx=0,my=0;
+window.addEventListener('mousemove', function(evt) 
+       {
+         
+           mx= evt.clientX; 
+           my= evt.clientY ;		 
+		 /*ctx.beginPath();
+         ctx.arc(mx,my,40,0,2*Math.PI);
+         ctx.stroke();*/
+ 
+       }, false);
+	   
+
+var x=new Array();
+var y=new Array();
+var n=0;
+
+
+function newdot()
+{
+   var tx=Math.floor(Math.random()*500);
+   var ty=Math.floor(Math.random()*500);
+   ctx.beginPath();
+   ctx.arc(tx,ty,5,0,2*Math.PI);
+   ctx.stroke();
+   x[n]=tx;
+   y[n]=ty;
+   n++;
+}
+
+addEventListener("keypress", function(event){
+
+    newdot();
+
+  });
+	   
+tt=setInterval(draw,10);
+
+function draw()
+{
+   ctx.clearRect(0,0,500,500);
+   var i=0;
+   for(i=0;i<n;i++)
+   {
+     if(x[i]<mx)
+	 {
+	   x[i]++;
+	 }
+	 if(x[i]>mx)
+	  {
+	   x[i]--;
+	 }
+	 if(y[i]<my)
+	 {
+	   y[i]++;
+	 }
+	 if(y[i]>my)
+	  {
+	   y[i]--;
+	 }
+	 ctx.beginPath();
+	 ctx.fillStyle="#FF0000";
+     ctx.arc(x[i],y[i],5,0,2*Math.PI);
+	 ctx.closePath();
+	 ctx.fill();
+   
+   }
+	
+    
+} 
+	   
+</script> 
+
+</body>
+</html>

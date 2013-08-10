@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+<head>
+<script type="text/javascript">
+var canvas = null;
+var img = null;
+var ctx = null;
+var imageReady = false;
+var x,y,tt;
+function onload() {
+  canvas = document.getElementById('mycanvas');
+  ctx = canvas.getContext("2d");
+  img = new Image();
+  img.src = 'sprites/main.png';
+  img.onload = loaded();
+  x=195;
+  y=35;
+  }
+function loaded() {
+  imageReady = true;
+}
+
+var frame=0;
+tt=setInterval(update,250);
+
+function update()
+	{
+	redraw();
+	frame++;
+	if(frame>=2)
+	frame=0;
+	}
+
+function redraw()
+ {
+  ctx.fillStyle = '#FFFFFF';
+  ctx.fillRect(0, 0, canvas.width, canvas.height);
+  if (imageReady)
+  {
+ ctx.drawImage(img,(35*frame)+95,32,35,35,x,y,35,35);
+  }
+  x-=5;
+					  
+}		
+</script>
+	<title></title>
+</head>
+<body onload="onload()">
+<canvas id="mycanvas"></canvas>
+</body>
+</html>
