@@ -21,8 +21,27 @@ var canvas = null;
 var img = null;
 var ctx = null;
 var imageReady = false;
-var x,y,tt,frame=0;
-var dir=0;// 0-stay,1-right,2-left,3-down
+var tt;
+var d;
+var hero={
+x:100,
+y:0,
+frame:0,
+left:function()
+  {
+  hero.x-=1;
+  hero.frame+=1;
+  if(hero.frame>=2)
+  hero.frame=0;
+  },
+right:function()
+  {
+  hero.x+=1;
+  hero.frame+=1;
+  if(hero.frame>=2)
+  hero.frame=0;
+  }
+}
 function onload() 
 {
   canvas = document.getElementById('myCanvas');
@@ -30,56 +49,46 @@ function onload()
   img = new Image();
   img.src = 'sprites/main.png';
   img.onload = loaded();
-  x=195;
-  y=35;
-}
+  hero.x=100;
+  hero.y=0;
+
+ }
 function loaded() {
   imageReady = true;
   tt=setInterval(redraw,250);
 }
 
 window.addEventListener("keypress", function(event){
-
-    var key=event.keyCode;
-	if(key==97)
-	dir=2;//left
-	if(key==100)
-	dir=1;//right
-	if(key==115)
-	dir=3;//down
-    //alert(event.keyCode)
+  
+  var key=event.keyCode;  
+  if(key==97)
+  {
+  hero.left();  
+  d=1;
+  }
+  if(key==100)
+  {
+  hero.right();
+  d=2;
+  }
   });
-	   
-
-
-
 function redraw()
  {
   ctx.fillStyle = '#FFFFFF';
   ctx.fillRect(0, 0, canvas.width, canvas.height);
+
   if (imageReady)
   {
-		if(dir!=0)
-		{
-			
-			if(dir==2)
-			{ctx.drawImage(img,(35*frame)+95,32,35,35,x,y,35,35);
-			dir=0;
-			 x-=5;
-			 //ctx.drawImage(img,(35*1)+95,0,35,35,x,y,35,35);
-			}
-		}
-		//ctx.drawImage(img,(35*1)+95,0,35,35,x,y,35,35);
-		
-	//checking frame
-	if(frame>=2)
-	frame=0;
-	else
-	frame++;
+  if(d==1)
+  {
+  ctx.drawImage(img,(35*hero.frame)+95,32,30,35,hero.x,hero.y,35,35);
   }
- 
-					  
-}		
+  else if(d==2)
+  {
+  ctx.drawImage(img,(35*hero.frame)+95,64,30,35,hero.x,hero.y,35,35);
+  }
+  }         
+}   
 </script> 
 
 </body>
