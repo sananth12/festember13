@@ -23,6 +23,8 @@ var ctx = null;
 var imageReady = false;
 var tt,weapon=0;
 var d,dir;
+var zombie_array=new Array();
+
 var hero={
 x:100,
 y:100,
@@ -44,6 +46,48 @@ right:function()
   hero.frame=0;
   }
 }
+
+// Constructor for the zombie(s)
+
+function zombie(x,type)
+{
+   this.x=x;
+   this.y=500;
+   this.fps=1; // sprite frame
+   this.max_fps=3;
+   this.x_img=0;
+   this.y_img=0;
+   this.x_inc=0;
+   this.img=new Image();
+   if(type==1)
+   {
+       this.img.src="sprites/ZombieSheet2.png";
+       this.x_img=191;
+       this.y_img=96;
+       this.x_inc=30;
+       this.x_inc=31;
+       this.fps=6;
+   }
+
+
+}
+zombie.prototype.update = function() 
+{
+   if(this.fps<=this.max_fps)
+   {  
+      this.x+=5;
+      this.fps++;
+   }
+ };
+zombie.prototype.draw = function() 
+{
+   ctx.drawImage(this.img,(this.x_inc*this.fps)+this.x_img,this.y_img,30,31,this.x,this.y,30,30);
+
+};
+
+
+//end of constructor
+
 function onload()
 {
   canvas = document.getElementById('myCanvas');
@@ -55,10 +99,12 @@ function onload()
   img.onload = loaded();
   hero.x=100;
 
+
  }
 function loaded() {
   imageReady = true;
-  tt=setInterval(redraw,140);
+  d=3;
+  tt=setInterval(redraw,100);
 }
 
 window.addEventListener("keypress", function(event){
@@ -77,12 +123,9 @@ window.addEventListener("keypress", function(event){
     if( (key==32 && d==2 )|| (key==32 &&d==1) )
     {
       // WEAPONS
-
       weapon=1;
       hero.axe=0;
-      
       dir= ( d==2?1:-1);
-
       hero.axe_x=hero.x + (28*dir);
     }
     
@@ -112,10 +155,26 @@ function redraw()
       ctx.drawImage(img,35+95,0,30,35,hero.x,hero.y,35,35);
     }
   }
+  ////////// Drawing/creating zombies  //////////////////
+  
+  var probability=Math.floor((Math.random()*10)+1);
+  if(probability==1)
+  {
+    var temp=new zombie( Math.floor((Math.random()*450)+1),1);
+    zombie_array.push(temp);
+  }
+  for(var i=0;i<zombie_array.length;i++)
+  {
+       zombie_array[i].update();
+       zombie_array[i].draw();
+  }
+
+  ///////////////////////////////////////////////////////
+
   if(weapon>0)
   {
        ctx.drawImage(image,82*hero.axe,440,76,100,hero.axe_x,hero.y,50,25);
-       if(hero.axe<8)
+       if(hero.axe<7)
         {
           hero.axe++;
           hero.axe_x+=20*dir;
@@ -135,6 +194,7 @@ function redraw()
 }
 
 </script>
-
+Press a & d to move left/right. Press space+a or space+d while moving to throw weapon.<br/>
+As of now,works only in Chrome 
 </body>
 </html>
