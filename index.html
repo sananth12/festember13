@@ -47,7 +47,7 @@ right:function()
   }
 }
 
-// Constructor for the zombie(s)
+// Constructor for the zombie(s) --- Ananth ---
 
 function zombie(x,type)
 {
@@ -64,14 +64,12 @@ function zombie(x,type)
        this.img.src="sprites/ZombieSheet2.png";
        this.x_img=196;
        this.y_img=96;
-       this.x_inc=30;
        this.x_inc=31;
-       this.max_fps=5;
+       this.max_fps=2;
    }
    this.draw = function() 
   {
       ctx.drawImage(this.img,(this.x_inc*this.fps)+this.x_img,this.y_img,30,30,this.x,this.y,30,30);
-   //ctx.drawImage(img,(35*hero.frame)+95,32,30,35,hero.x,hero.y,35,35);
   }
 
 }
@@ -79,22 +77,14 @@ zombie.prototype.update = function()
 {
    if(this.fps<this.max_fps)
    {  
-      this.y-=1;
+      this.y-=2;
       this.fps++;
-     // alert("Drawing");
    }
    else
    {
          this.fps=0;
    }
  };
-/*zombie.prototype.draw = function() 
-{
-   ctx.drawImage(this.img,(this.x_inc*this.fps)+this.x_img,this.y_img,30,31,this.x,this.y,30,30);
-   //ctx.drawImage(img,(35*hero.frame)+95,32,30,35,hero.x,hero.y,35,35);
-
-};*/
-
 
 //end of constructor
 
@@ -165,9 +155,9 @@ function redraw()
       ctx.drawImage(img,35+95,0,30,35,hero.x,hero.y,35,35);
     }
   }
-  ////////// Drawing/creating zombies  //////////////////
+  ////////// Drawing+creating zombies  -- Ananth -- //////////////////
   
-  var probability=Math.floor((Math.random()*10)+1);
+  var probability=Math.floor((Math.random()*20)+1);
   if(probability==1)
   {
     var temp=new zombie( Math.floor((Math.random()*450)+1),1);
@@ -179,7 +169,7 @@ function redraw()
        zombie_array[i].draw();
   }
 
-  ///////////////////////////////////////////////////////
+  ////////////////////////////////////////////////////////////////////
 
   if(weapon>0)
   {
