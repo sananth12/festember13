@@ -167,6 +167,10 @@ function redraw()
   {
        zombie_array[i].update();
        zombie_array[i].draw();
+       if(zombie_array[i].y<50)
+       {
+         zombie_array.splice(i,1);
+       }
   }
 
   ////////////////////////////////////////////////////////////////////
@@ -182,17 +186,13 @@ function redraw()
       else
       {
         hero.axe=0;
-        hero.axe_x+=20*dir;
-        
+        hero.axe_x+=20*dir; 
       }
       
       if(hero.axe_x>canvas.width)
         weapon=0;
-
   }
-
 }
-
 </script>
 Press a & d to move left/right. Press space+a or space+d while moving to throw weapon.<br/>
 As of now,works only in Chrome 
