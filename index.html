@@ -21,7 +21,7 @@ var canvas = null;
 var img = null,image=null;
 var ctx = null;
 var imageReady = false;
-var tt,weapon=0;
+var tt,weapon=0,axe_x=1;
 var d,dir;
 var zombie_array=new Array();
 
@@ -47,7 +47,7 @@ right:function()
   }
 }
 
-// Constructor for the zombie(s) --- Ananth --- //
+// Constructor for the zombie(s) --- Ananth --- ////////////////
 
 function zombie(x,type)
 {
@@ -86,8 +86,7 @@ zombie.prototype.update = function()
    }
  };
 
-//end of constructor
-
+//end of constructor //////////////////////////////////
 function onload()
 {
   canvas = document.getElementById('myCanvas');
@@ -98,7 +97,6 @@ function onload()
   image.src='sprites/attack.png';
   img.onload = loaded();
   hero.x=100;
-
 
  }
 function loaded() {
@@ -120,7 +118,7 @@ window.addEventListener("keypress", function(event){
     hero.right();
     d=2;
     }
-    if( (key==32 && d==2 )|| (key==32 &&d==1) )
+    if( (key==32 && d==2 )|| (key==32 &&d==1) && axe_number>0 )
     {
       // WEAPONS
       weapon=1;
@@ -188,7 +186,7 @@ function redraw()
         hero.axe=0;
         hero.axe_x+=20*dir; 
       }
-      
+
       if(hero.axe_x>canvas.width)
         weapon=0;
   }
