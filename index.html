@@ -49,7 +49,8 @@ right:function()
 function zombie(x,type)
 {
    this.x=x;
-   this.y=500;
+   this.y=300;
+   this.walk='up';
    this.fps=0; // sprite frame
    this.max_fps=3;
    this.x_img=0;
@@ -66,8 +67,13 @@ function zombie(x,type)
        this.max_fps=2;
    }
    this.draw = function() 
-  {
+  {   
+      if(this.walk=='up')
       ctx.drawImage(this.img,(this.x_inc*this.fps)+this.x_img,this.y_img,30,30,this.x,this.y,30,30);
+      else if(this.walk=='right')
+      ctx.drawImage(this.img,(this.x_inc*this.fps)+this.x_img,this.y_img,25,32,this.x,this.y,25,30);
+      else if(this.walk=='left')
+      ctx.drawImage(this.img,(this.x_inc*this.fps)+this.x_img,this.y_img,25,32,this.x,this.y,25,30);     
   }
 
 }
@@ -75,9 +81,18 @@ zombie.prototype.update = function()
 {
    if(this.fps<this.max_fps)
    {  
-      if(this.die==false){
-      this.y-=2;
-      this.fps++;
+      if(this.die==false)
+      {
+        if(this.walk=='right')
+        this.x+=2;
+        
+        if(this.walk=='left')
+        this.x-=2;
+        
+        if(this.walk=='up')
+        this.y-=2;
+        
+        this.fps++;
       }
       else
       {
@@ -88,6 +103,24 @@ zombie.prototype.update = function()
    else
    {
          this.fps=0;
+   }
+
+   /* Checking if reached floor */
+   if(this.y<=100)
+   {
+      if(this.x<hero.x)
+      {
+        this.walk='right';
+        this.x_img=295;
+        this.y_img=65;
+        this.x_inc=28;
+      }
+     else{
+      this.walk='left';
+      this.x_img=295;
+      this.y_img=33;
+      this.x_inc=28;
+     }
    }
  };
 
