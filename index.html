@@ -105,6 +105,7 @@ function jack(id)
     this.x=hero.x;
     this.img=new Image();
     this.img.src='sprites/nat.png';
+    this.done=false;
     this.draw = function() 
     {
       ctx.drawImage(this.img,0,0,70,60,this.x,this.y,23,24);
@@ -113,7 +114,7 @@ function jack(id)
 jack.prototype.fall = function() 
 {
   this.y+=20;
- };
+};
  
   /////////
 function onload()
@@ -208,24 +209,30 @@ function redraw()
      
   for(var q=1;q<jx.length;q=q+1) // Prinring jacks
   {
+    if(jx[q].done==false){
     jx[q].draw();
-    jx[q].fall();
+    jx[q].fall();  }
 
-    for(var i=0;i<zombie_array.length;i++)
-    {
-      //console.log(zombie_array[i].y);
-      if(zombie_array[i].y==jx[q].y )
-      {
-        zombie_array[i].die=true;
-        //alert("contact");
-        jx[q].y=600;
-      }
-    }
-/*
-    if(jx[q].y>500)
+   /* if(jx[q].y>500)
        {
          jx.splice(q,1);
        }   */  
+  }
+  /////////////////////////////////////////// Check for contact ////////
+  for(var i=0;i<zombie_array.length;i++)
+    {
+      //console.log(zombie_array[i].y);
+      for(var q=1;q<jx.length;q=q+1) 
+      {
+        if(jx[q].x >= zombie_array[i].x-24 && jx[q].x<= zombie_array[i].x+30 &&  jx[q].y>=zombie_array[i].y-24 && jx[q].done==false )
+        {
+          zombie_array[i].die=true;
+          jx[q].done=true;
+          //alert("contact");
+          jx[q].y=1600;
+        }
+    
+    }
   }
   ////////////////////////////////////////////////////////////////////
 
@@ -256,10 +263,8 @@ function redraw()
         weapon=0;
 
   }
-  
   }  
   }
-
 </script>
 Press a & d to move left/right. Press space+a or space+d while moving to throw weapon.<br/>
 As of now,works only in Chrome 
