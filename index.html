@@ -22,7 +22,7 @@ var imageReady = false;
 var tt,weapon=0;
 var d,dir;
 var zombie_array=new Array();
-var t;
+var t,score=0;
 var jx=new Array();
 var hero={
 x:100,
@@ -49,7 +49,7 @@ right:function()
 function zombie(x,type)
 {
    this.x=x;
-   this.y=300;
+   this.y=30z 0;
    this.walk='up';
    this.fps=0; // sprite frame
    this.max_fps=3;
@@ -258,6 +258,7 @@ function redraw()
         if(jx[q].x >= zombie_array[i].x-24 && jx[q].x<= zombie_array[i].x+30 &&  jx[q].y>=zombie_array[i].y-24 && jx[q].done==false )
         {
           zombie_array[i].die=true;
+          score++;
           jx[q].done=true;
           //alert("contact");
           jx[q].y=1600;
