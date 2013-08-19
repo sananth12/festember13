@@ -19,10 +19,10 @@ var canvas = null;
 var img = null,image=null;
 var ctx = null;
 var imageReady = false;
-var tt,weapon=0;
+var tt,weapon=0,disp=0;
 var d,dir;
 var zombie_array=new Array();
-var t,score=0;
+var t;
 var jx=new Array();
 var hero={
 x:100,
@@ -49,7 +49,7 @@ right:function()
 function zombie(x,type)
 {
    this.x=x;
-   this.y=30z 0;
+   this.y=500;
    this.walk='up';
    this.fps=0; // sprite frame
    this.max_fps=3;
@@ -126,6 +126,21 @@ zombie.prototype.update = function()
 
 //end of constructor
 
+///// Closure for scoring - Ananth //////
+
+function score()
+{
+  var kills=0;
+  return function() {
+    kills+=1;
+    return kills;
+  }
+  function say_score()
+  {return kills;}
+}
+var SCORE= score();
+///////// closure end //////////////////
+
 //throwing jack 
 //jack 
 function jack(id)
@@ -200,6 +215,9 @@ function redraw()
  {
   ctx.fillStyle = '#FFFFFF';
   ctx.fillRect(0, 0, canvas.width, canvas.height);
+  ctx.font = '18pt Calibri';
+  ctx.fillStyle = 'black';
+  ctx.fillText("Score:  "+disp,90,50);
   ctx.beginPath();
       ctx.moveTo(0,hero.y+33);
       ctx.lineTo(canvas.width,hero.y+33);
@@ -248,7 +266,7 @@ function redraw()
          jx.splice(q,1);
        }   */  
   }
-  /////////////////////////////////////////// Check for contact (requires optimization) ////////
+  //////////////////////// Check for contact (requires optimization) ////////
 
   for(var i=0;i<zombie_array.length;i++)
     {
@@ -258,9 +276,9 @@ function redraw()
         if(jx[q].x >= zombie_array[i].x-24 && jx[q].x<= zombie_array[i].x+30 &&  jx[q].y>=zombie_array[i].y-24 && jx[q].done==false )
         {
           zombie_array[i].die=true;
-          score++;
           jx[q].done=true;
-          //alert("contact");
+          disp=SCORE();
+          //alert(SCORE());
           jx[q].y=1600;
         }
     
