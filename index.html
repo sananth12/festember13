@@ -403,7 +403,7 @@ function redraw()
   ////////// Drawing+creating zombies  -- Ananth -- //////////////////
   
   var probability=Math.floor((Math.random()*20)+1);
-  if(probability==1)
+  if(probability<5)
   {
     var temp=new zombie( Math.floor((Math.random()*450)+1),1);
     zombie_array.push(temp);
@@ -426,18 +426,17 @@ function redraw()
   }*/
   for(var i=0;i<zombie_array.length ;i++)
   { var v=0;
-  if(zombie_array[i] !=null)
+  if(zombie_array[i].die != true)
   {
   for(var t=1;t<=bs;t++)
   {
   if(Math.abs(zombie_array[i].x+7.5-gun[t].dx)<15 && Math.abs(zombie_array[i].y+7.5-gun[t].dy)<15)
     {
     v=1;
-    zombie_array[i]=null;
-    var b1=Math.floor(Math.random()*250);
-    var b2=Math.floor(Math.random()*250);
-  var ncandy=new candy(b1,b2);
-  candy_array.push(ncandy);
+    zombie_array[i].die=true;
+    disp=SCORE();
+   var ncandy=new candy(zombie_array[i].x,zombie_array[i].y);
+   candy_array.push(ncandy);
     break;
     }
   }
@@ -466,7 +465,7 @@ function redraw()
       //console.log(zombie_array[i].y);
       for(var q=1;q<jx.length;q=q+1) 
       {
-        if(jx[q].x >= zombie_array[i].x-24 && jx[q].x<= zombie_array[i].x+30 &&  jx[q].y>=zombie_array[i].y-24 && jx[q].done==false )
+        if(jx[q].x >= zombie_array[i].x-24 && jx[q].x<= zombie_array[i].x+30 &&  jx[q].y>=zombie_array[i].y-24 && jx[q].done==false && zombie_array[i].die==false)
         {
           zombie_array[i].die=true;
           jx[q].done=true;
