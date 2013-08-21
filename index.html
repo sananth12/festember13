@@ -136,7 +136,7 @@ bullet.prototype.shoot = function()
 function zombie(x,type)
 {
    this.x=x;
-   this.y=300;
+   this.y=500;
    this.walk='up';
    this.fps=0; // sprite frame
    this.max_fps=3;
@@ -346,9 +346,9 @@ function redraw()
   ctx.fillStyle = '#FFFFFF';
   ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-  /* ########################## */
+  /* ########################## 
   var bb=new Image(); 
-  bb.src="sprites/red.jpg";
+  bb.src="sprites/orange.jpg";
   ctx.drawImage(bb,-225,-100)
   /* ##########################*/
 
@@ -446,8 +446,8 @@ function redraw()
     v=1;
     zombie_array[i].die=true;
     disp=SCORE();
-   var ncandy=new candy(zombie_array[i].x,zombie_array[i].y);
-   candy_array.push(ncandy);
+   //var ncandy=new candy(zombie_array[i].x,zombie_array[i].y);
+   //candy_array.push(ncandy);
     break;
     }
   }
@@ -479,6 +479,8 @@ function redraw()
         if(jx[q].x >= zombie_array[i].x-24 && jx[q].x<= zombie_array[i].x+30 &&  jx[q].y>=zombie_array[i].y-24 && jx[q].done==false && zombie_array[i].die==false)
         {
           zombie_array[i].die=true;
+          var ncandy=new candy(zombie_array[i].x,zombie_array[i].y);
+           candy_array.push(ncandy);
           jx[q].done=true;
           disp=SCORE();
           //alert(SCORE());
@@ -486,6 +488,15 @@ function redraw()
         }
     
     }
+    
+    //       GAME OVER ? //
+
+    if( ( zombie_array[i].x<hero.x+30 || zombie_array[i].x+30 ) && zombie_array[i].y>hero.y+30 )
+    {
+
+
+    }
+
   }
   ////////////////////////////////////////////////////////////////////
 
