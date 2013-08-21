@@ -338,10 +338,21 @@ window.addEventListener("keypress", function(event){
 
 window.addEventListener("keyup",function(){ d=3;});
 var q;
+
+////////////////////////// REDRAW **********************
+
 function redraw()
  {
   ctx.fillStyle = '#FFFFFF';
   ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+  /* ########################## */
+  var bb=new Image(); 
+  bb.src="sprites/red.jpg";
+  ctx.drawImage(bb,10,10)
+  /* ##########################*/
+
+
   /*  SCORING    */
   ctx.font = '18pt Calibri';
   ctx.fillStyle = 'black';
