@@ -288,8 +288,8 @@ function loaded() {
   {
   if(candycount>0)
   {
-  candycount-=candycount/5;
-  ammo+=candycount/5;
+  candycount-=1;
+  ammo+=1;
   alert(ammo);
   }
   }
@@ -502,7 +502,7 @@ function redraw()
             //alert("Game OVER");
              ctx.fillStyle = 'black';
              ctx.fillRect(0, 0, canvas.width, canvas.height);
-             ctx.font = '18pt Calibri';
+             ctx.font = '18pt Rockwell';
             ctx.fillStyle = '#FFFFFF';
             ctx.fillText("GAME OVER.",canvas.width/2 -100,canvas.height/2 -50);
             clearInterval(tt);
