@@ -12,7 +12,7 @@ position:relative;
 </head>
 
 <body onload="onload()"  onclick="getcandy()" onmousemove="get(event)">
-<canvas id="myCanvas" class="myCanvas" width="500" height="500" align="center"></canvas>
+<canvas id="myCanvas" class="myCanvas" width="700" height="500" align="center"></canvas>
 
 <script type="text/javascript">
 var canvas = null;
@@ -75,13 +75,13 @@ function dragon(){
   this.frame=0,
   this.draw=function()
     {
-    ctx.drawImage(imgd,96*this.frame,95,95,95,this.x,this.y,75,75);
+    //ctx.drawImage(imgd,96*this.frame,95,95,95,this.x,this.y,75,75);
     }
   this.move=function()
     {
         this.x-=5;
     this.y+=5;
-    ctx.drawImage(imgd,96*this.frame,95,95,95,this.x,this.y,75,75);
+    //ctx.drawImage(imgd,96*this.frame,95,95,95,this.x,this.y,75,75);
         }
   }
 dragon.prototype.createfireball = function()
@@ -236,11 +236,11 @@ function jack(id)
     this.id=id;
     this.x=hero.x;
     this.img=new Image();
-    this.img.src='sprites/nat.png';
+    this.img.src='sprites/jack.png';
     this.done=false;
     this.draw = function() 
     {
-      ctx.drawImage(this.img,0,0,70,60,this.x,this.y,23,24);
+      ctx.drawImage(this.img,0,0,79,79,this.x,this.y,24,24);
     }
   }
 jack.prototype.fall = function() 
@@ -346,10 +346,10 @@ function redraw()
   ctx.fillStyle = '#FFFFFF';
   ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-  /* ########################## 
+  /* ########################## */
   var bb=new Image(); 
-  bb.src="sprites/orange.jpg";
-  ctx.drawImage(bb,-225,-100)
+  bb.src="sprites/app_big.jpeg";
+  ctx.drawImage(bb,0,0)
   /* ##########################*/
 
 
@@ -491,9 +491,16 @@ function redraw()
     
     //       GAME OVER ? //
 
-    if( ( zombie_array[i].x<hero.x+30 || zombie_array[i].x+30 ) && zombie_array[i].y>hero.y+30 )
+    if( ( zombie_array[i].x<hero.x+30 && zombie_array[i].x>hero.x-15 ) && zombie_array[i].y<hero.y+30 )
     {
 
+            //alert("Game OVER");
+             ctx.fillStyle = 'black';
+             ctx.fillRect(0, 0, canvas.width, canvas.height);
+             ctx.font = '18pt Calibri';
+            ctx.fillStyle = '#FFFFFF';
+            ctx.fillText("GAME OVER.",canvas.width/2 -100,canvas.height/2);
+            clearInterval(tt);
 
     }
 
@@ -529,7 +536,7 @@ function redraw()
   }
   }  
   }
-</script>
+</script><br/>
 Press a & d to move left/right. Press space+a or space+d while moving to throw weapon.<br/>
 As of now,works only in Chrome 
 <input type="button" onclick="getammo()" value="shop"/>
