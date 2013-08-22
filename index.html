@@ -13,7 +13,7 @@ position:relative;
 
 <body onload="onload()"  onclick="getcandy()" onmousemove="get(event)">
 <canvas id="myCanvas" class="myCanvas" width="700" height="500" align="center"></canvas>
-
+<canvas id="cnvs" class="myCanvas" width="250" height="500" align="center"></canvas>
 <script type="text/javascript">
 var canvas = null;
 var img = null,image=null,imgd=null,img2=null,img3=null;
@@ -97,7 +97,31 @@ dragon.prototype.movefireball = function()
     ctx.drawImage(img2,0,0,37,98,this.fx,this.fy,25,25);
   };
 
-///////////////////////////////
+////////////////// BOMB ////////
+
+var bomb={
+x:100,
+y:100,
+axe:0,
+axe_x:0,
+frame:0,
+update:function()
+  {
+  hero.x-=3;
+  hero.frame+=1;
+  if(hero.frame>=2)
+  hero.frame=0;
+  },
+draw:function()
+  {
+  hero.x+=3;
+  hero.frame+=1;
+  if(hero.frame>=2)
+  hero.frame=0;
+  }
+}
+
+
 
 //////////////// Bullet ///////
 function bullet()
@@ -539,10 +563,20 @@ function redraw()
         weapon=0;
 
   }
-  }  
+  }
+
+   
+  /********    SHOP   *****/
+  canvas2 = document.getElementById('cnvs');
+  shop = canvas2.getContext("2d");
+  shop.font = '18pt Calibri';
+  shop.fillStyle = 'black';
+  shop.fillText("Shop:",90,50);
+  /************************/
+
   }
 </script><br/>
-Press a & d to move left/right. Press space+a or space+d while moving to throw weapon.<br/>
+Press a & d to move left/right. Press s to drop jack-lantern.shop for ammo and press space to shoot<br/>
 As of now,works only in Chrome 
 <input type="button" onclick="getammo()" value="shop"/>
 </body>
