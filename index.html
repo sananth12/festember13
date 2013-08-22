@@ -35,6 +35,8 @@ var bs;
 var gun=new Array();
 var ammo=0;
 var candycount=100;
+var canvas2 = document.getElementById('cnvs');
+var shop = canvas2.getContext("2d");
 function candy(x,y)
 {
 this.ncx=x;
@@ -96,31 +98,6 @@ dragon.prototype.movefireball = function()
     this.fy-=10;
     ctx.drawImage(img2,0,0,37,98,this.fx,this.fy,25,25);
   };
-
-////////////////// BOMB ////////
-
-var bomb={
-x:100,
-y:100,
-axe:0,
-axe_x:0,
-frame:0,
-update:function()
-  {
-  hero.x-=3;
-  hero.frame+=1;
-  if(hero.frame>=2)
-  hero.frame=0;
-  },
-draw:function()
-  {
-  hero.x+=3;
-  hero.frame+=1;
-  if(hero.frame>=2)
-  hero.frame=0;
-  }
-}
-
 
 
 //////////////// Bullet ///////
@@ -565,10 +542,9 @@ function redraw()
   }
   }
 
-   
+
   /********    SHOP   *****/
-  canvas2 = document.getElementById('cnvs');
-  shop = canvas2.getContext("2d");
+ 
   shop.font = '18pt Calibri';
   shop.fillStyle = 'black';
   shop.fillText("Shop:",90,50);
