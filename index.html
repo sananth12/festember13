@@ -29,12 +29,10 @@ var jx=new Array();
 var mx,my;
 var bf=0;
 var ss;
-var xf=0;
-var ns;
-var bs;
+var xf=0,ns, bs;
 var gun=new Array();
 var ammo=0;
-var candycount=100;
+var candycount=0;
 var canvas2 = document.getElementById('cnvs');
 var shop = canvas2.getContext("2d");
 function candy(x,y)
@@ -289,8 +287,9 @@ function loaded() {
   {
   if(candycount>0)
   {
-  candycount-=1;
-  ammo+=1;
+     ammo+=candycount;
+   candycount=0;
+
   alert(ammo);
   }
   }
@@ -303,10 +302,10 @@ function loaded() {
   if(candy_array[i]!=null)
   {
   if(Math.abs(mx-candy_array[i].ncx)<45&&Math.abs(my-candy_array[i].ncy)<45)
-  candy_array[i]=null;
+  candy_array[i]=null,candycount+=1;;
   }
   }
- candycount+=10;
+ 
  }
 //////////////
 window.addEventListener("keypress", function(event){
