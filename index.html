@@ -10,16 +10,19 @@ position:relative;
 }
 </style>
 </head>
-
 <body onload="onload()"  onclick="getcandy()" onmousemove="get(event)">
-<canvas id="myCanvas" class="myCanvas" width="700" height="500" align="center"></canvas>
+<canvas id="myCanvas" class="myCanvas" width="500" height="500" align="center"></canvas>
 <canvas id="cnvs" class="myCanvas" width="250" height="500" align="center"></canvas>
 <script type="text/javascript">
-var canvas = null;
+var canvas = null,canvas2=null;
 var img = null,image=null,imgd=null,img2=null,img3=null;
+var isnuke=false;
+var blaston=false;
+var imgb=null;
 var ctx = null;
 var imageReady = false;
 var tt,weapon=0,disp=0;
+var nubomb;
 var d,dir,a,gun;
 var mag;
 var zombie_array=new Array();
@@ -29,12 +32,12 @@ var jx=new Array();
 var mx,my;
 var bf=0;
 var ss;
-var xf=0,ns, bs;
+var xf=0;
+var ns;
+var bs;
 var gun=new Array();
 var ammo=0;
-var candycount=0;
-var canvas2 = document.getElementById('cnvs');
-var shop = canvas2.getContext("2d");
+var candycount=100;
 function candy(x,y)
 {
 this.ncx=x;
@@ -167,7 +170,6 @@ function zombie(x,type)
       else if(this.walk=='left')
       ctx.drawImage(this.img,(this.x_inc*this.fps)+this.x_img,this.y_img,25,32,this.x,this.y,25,30);     
   }
-
 }
 zombie.prototype.update = function() 
 {
@@ -252,11 +254,45 @@ jack.prototype.fall = function()
 {
   this.y+=20;
 };
- 
   /////////
+  ///////////////nuke
+  function nuke()
+  {
+  this.x=hero.x;
+  this.y=hero.y;
+  this.img=new Image;
+  this.radius=50;
+  this.img.src='sprites/bomb.jpg';
+   this.ns=0;
+   }
+nuke.prototype.draw=function()
+{  
+if(this.ns==0)
+{this.x=hero.x;this.y=hero.y;
+}
+ctx.drawImage(this.img,0,0,228,210,this.x,this.y,25,25);
+this.ns++; 
+ }
+nuke.prototype.drop=function()
+{
+this.y+=20;
+}
+nuke.prototype.blast=function(x,y)
+{
+this.begx=this.begx||this.x;
+this.begy=this.begy||this.y;
+    ctx.beginPath();
+    ctx.arc(this.begx,this.begy,this.radius,0,2*Math.PI);
+    ctx.stroke();
+    ctx.closePath();
+this.radius+=10;
+    }
+  ///////////////
 function onload()
 {
   mx=mx||-1; 
+  canvas2 = document.getElementById('cnvs');
+  shop = canvas2.getContext("2d");
   canvas = document.getElementById('myCanvas');
   ctx = canvas.getContext("2d");
   img = new Image();
@@ -265,16 +301,21 @@ function onload()
   image.src='sprites/attack.png';
   imgd= new Image();
   imgd.src = 'sprites/FlyingBlueDragon.png';
+  imgb=new Image();
+  imgb.src='sprites/bomb.jpg'
   imgc=new Image();
 imgc.src='sprites/candy1.png';
   img2=new Image();
   img2.src = 'sprites/flame2.png';
+  nubomb=new nuke();
+ 
  img2.onload=loaded();
   hero.x=100;
    a=new dragon();
-  a.draw();
-  a.createfireball();
-xf=0;
+//  a.draw();
+ // a.createfireball();
+
+  xf=0;
 
  }
 function loaded() {
@@ -287,10 +328,8 @@ function loaded() {
   {
   if(candycount>0)
   {
-     ammo+=candycount;
-   candycount=0;
-
-  alert(ammo);
+  candycount-=1;
+  ammo+=1;
   }
   }
  function getcandy()
@@ -302,10 +341,10 @@ function loaded() {
   if(candy_array[i]!=null)
   {
   if(Math.abs(mx-candy_array[i].ncx)<45&&Math.abs(my-candy_array[i].ncy)<45)
-  candy_array[i]=null,candycount+=1;;
+  candy_array[i]=null;
   }
   }
- 
+ candycount+=10;
  }
 //////////////
 window.addEventListener("keypress", function(event){
@@ -338,7 +377,7 @@ window.addEventListener("keypress", function(event){
     {
     t=++t||1;
   jx[t]=new jack(t);
-    
+
     }
   });
 
@@ -348,26 +387,42 @@ var q;
 ////////////////////////// REDRAW **********************
 
 function redraw()
+ { 
+ if(nubomb.radius>=1000)
  {
+ blaston=false;
+ }
+
+  shop.clearRect(0,0,canvas.width,canvas.height);
+  shop.font = '18pt Calibri';
+  shop.fillStyle = 'black';
+  shop.fillText(ammo,90,50);
+  shop.fillText("nuke",90,100);
   ctx.fillStyle = '#FFFFFF';
   ctx.fillRect(0, 0, canvas.width, canvas.height);
 
   /* ########################## */
   var bb=new Image(); 
-  bb.src="sprites/app_big.jpeg";
-  ctx.drawImage(bb,0,0)
+  bb.src="sprites/black.png";
+  ctx.drawImage(bb,0,0);
   /* ##########################*/
-
-
   /*  SCORING    */
-  ctx.font = '18pt Calibri';
-  ctx.fillStyle = 'black';
-  ctx.fillText("Score:  "+disp,90,50);
+  shop.font = '18pt Calibri';
+  shop.fillStyle = 'black';
+  shop.fillText("Score:  "+disp,90,200);
   /*                */
+  if(blaston==true)
+ {nubomb.blast(100,500);
+  }
+ if(isnuke==true)
+  {
+  nubomb.drop();
+  nubomb.draw();
+  }
   if(bf==1)
   {
      if(ammo)
-    {
+    { 
       bs=++bs||1; 
       gun[bs]=new bullet(); 
       bf=0;
@@ -441,9 +496,11 @@ function redraw()
        }
   }*/
   for(var i=0;i<zombie_array.length ;i++)
-  { var v=0;
+  { 
+  var v=0;
   if(zombie_array[i].die != true)
-  {
+  { if(zombie_array[i].x*zombie_array[i].x+zombie_array[i].y*zombie_array[i].y-nubomb.radius*nubomb.radius<0 && blaston==true)
+ { zombie_array[i].die=true;}
   for(var t=1;t<=bs;t++)
   {
   if(Math.abs(zombie_array[i].x+7.5-gun[t].dx)<15 && Math.abs(zombie_array[i].y+7.5-gun[t].dy)<15)
@@ -461,7 +518,10 @@ function redraw()
   zombie_array[i].update();
     zombie_array[i].draw();   
    }
-  }}
+  }
+    if(Math.abs(zombie_array[i].x-nubomb.x)<25 &&Math.abs(zombie_array[i].y-nubomb.y)<25 && isnuke==true)
+  blaston=true;
+  }
 
   for(var q=1;q<jx.length;q=q+1) // Prinring jacks
   {
@@ -479,7 +539,7 @@ function redraw()
   for(var i=0;i<zombie_array.length;i++)
     {
       //console.log(zombie_array[i].y);
-      for(var q=1;q<jx.length;q=q+1) 
+   for(var q=1;q<jx.length;q=q+1) 
       {
         if(jx[q].x >= zombie_array[i].x-24 && jx[q].x<= zombie_array[i].x+30 &&  jx[q].y>=zombie_array[i].y-24 && jx[q].done==false && zombie_array[i].die==false)
         {
@@ -540,19 +600,15 @@ function redraw()
 
   }
   }
-
-
-  /********    SHOP   *****/
- 
-  shop.font = '18pt Calibri';
-  shop.fillStyle = 'black';
-  shop.fillText("Shop:",90,50);
-  /************************/
-
   }
+ function nukethem()
+ {
+ isnuke=true;
+ }
 </script><br/>
 Press a & d to move left/right. Press s to drop jack-lantern.shop for ammo and press space to shoot<br/>
 As of now,works only in Chrome 
 <input type="button" onclick="getammo()" value="shop"/>
+<input type="button" onclick="nukethem()" value="nuke"/>
 </body>
 </html>
