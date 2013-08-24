@@ -37,7 +37,7 @@ var ns;
 var bs;
 var gun=new Array();
 var ammo=0;
-var candycount=100;
+var candycount=0;
 function candy(x,y)
 {
 this.ncx=x;
@@ -285,6 +285,27 @@ this.begy=this.begy||this.y;
     ctx.arc(this.begx,this.begy,this.radius,0,2*Math.PI);
     ctx.stroke();
     ctx.closePath();
+    
+    ctx.beginPath();
+    ctx.lineWidth = 2;
+    ctx.strokeStyle = 'grey';
+    ctx.arc(this.begx,this.begy,this.radius-50,0,2*Math.PI);
+    ctx.stroke();
+    ctx.closePath();
+    ctx.strokeStyle = 'black';
+    
+    if(this.radius>250) 
+    {
+    ctx.beginPath();
+    ctx.lineWidth = 2;
+    ctx.strokeStyle = 'orange';
+    ctx.arc(this.begx,this.begy,this.radius-150,0,2*Math.PI);
+    ctx.stroke();
+    ctx.closePath();
+    ctx.strokeStyle = 'black';
+    }
+       
+
 this.radius+=10;
     }
   ///////////////
@@ -328,8 +349,9 @@ function loaded() {
   {
   if(candycount>0)
   {
-  candycount-=1;
-  ammo+=1;
+  ammo+=candycount;
+  candycount=0;
+  
   }
   }
  function getcandy()
@@ -404,7 +426,7 @@ function redraw()
   /* ########################## */
   var bb=new Image(); 
   bb.src="sprites/black.png";
-  ctx.drawImage(bb,0,0);
+  ctx.drawImage(bb,0,0,500,471,0,0,500,500);
   /* ##########################*/
   /*  SCORING    */
   shop.font = '18pt Calibri';
@@ -430,7 +452,6 @@ function redraw()
     }
     else
       {
-        if(q==0)
         alert('no ammo dude');
      }
    }
