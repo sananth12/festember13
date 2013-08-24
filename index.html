@@ -21,9 +21,9 @@ var blaston=false;
 var imgb=null;
 var ctx = null;
 var imageReady = false;
-var tt,weapon=0,disp=0;
+var tt,weapon=0;
 var nubomb;
-var d,dir,a,gun;
+var d,dir,a,gun,disp;
 var mag;
 var zombie_array=new Array();
 var candy_array=new Array();
@@ -220,7 +220,7 @@ zombie.prototype.update = function()
 
 //end of constructor
 
-///// Closure for scoring - Ananth //////
+///// scoring  //////
 
 function score()
 {
@@ -233,7 +233,7 @@ function score()
   {return kills;}
 }
 var SCORE= score();
-///////// closure end //////////////////
+/////////  end //////////////////
 
 //throwing jack 
 //jack 
@@ -298,7 +298,7 @@ this.begy=this.begy||this.y;
     {
     ctx.beginPath();
     ctx.lineWidth = 2;
-    ctx.strokeStyle = 'orange';
+    ctx.strokeStyle = 'red';
     ctx.arc(this.begx,this.begy,this.radius-150,0,2*Math.PI);
     ctx.stroke();
     ctx.closePath();
@@ -363,10 +363,14 @@ function loaded() {
   if(candy_array[i]!=null)
   {
   if(Math.abs(mx-candy_array[i].ncx)<45&&Math.abs(my-candy_array[i].ncy)<45)
-  candy_array[i]=null;
+  {
+    candy_array[i]=null;
+    candycount+=1;
+  }
+  
   }
   }
- candycount+=10;
+ 
  }
 //////////////
 window.addEventListener("keypress", function(event){
@@ -414,11 +418,14 @@ function redraw()
  {
  blaston=false;
  }
+ 
+ 
+ 
 
   shop.clearRect(0,0,canvas.width,canvas.height);
   shop.font = '18pt Calibri';
   shop.fillStyle = 'black';
-  shop.fillText(ammo,90,50);
+  shop.fillText(candycount,90,50);
   shop.fillText("nuke",90,100);
   ctx.fillStyle = '#FFFFFF';
   ctx.fillRect(0, 0, canvas.width, canvas.height);
@@ -576,8 +583,10 @@ function redraw()
     }
     
     //       GAME OVER ? //
+     console.log(disp);
 
-    if( ( zombie_array[i].x<hero.x+30 && zombie_array[i].x>hero.x-15 ) && zombie_array[i].y<hero.y+30 )
+
+    if( ( zombie_array[i].x<hero.x+30 && zombie_array[i].x>hero.x-15 ) && zombie_array[i].y<hero.y+30 && zombie_array[i].die==false)
     {
 
             //alert("Game OVER");
@@ -621,6 +630,7 @@ function redraw()
 
   }
   }
+          
   }
  function nukethem()
  {
