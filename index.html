@@ -23,7 +23,7 @@ var ctx = null;
 var imageReady = false;
 var tt,weapon=0;
 var nubomb;
-var d,dir,a,gun,disp;
+var d,dir,a,gun,disp=0;
 var mag;
 var zombie_array=new Array();
 var candy_array=new Array();
@@ -225,7 +225,8 @@ zombie.prototype.update = function()
 function score()
 {
   var kills=0;
-  return function() {
+  return function(x) {
+  
     kills+=1;
     return kills;
   }
@@ -418,10 +419,8 @@ function redraw()
  {
  blaston=false;
  }
- 
- 
- 
 
+ 
   shop.clearRect(0,0,canvas.width,canvas.height);
   shop.font = '18pt Calibri';
   shop.fillStyle = 'black';
@@ -459,7 +458,7 @@ function redraw()
     }
     else
       {
-        alert('no ammo dude');
+        
      }
    }
    
@@ -569,7 +568,7 @@ function redraw()
       //console.log(zombie_array[i].y);
    for(var q=1;q<jx.length;q=q+1) 
       {
-        if(jx[q].x >= zombie_array[i].x-24 && jx[q].x<= zombie_array[i].x+30 &&  jx[q].y>=zombie_array[i].y-24 && jx[q].done==false && zombie_array[i].die==false)
+        if(jx[q].x >= zombie_array[i].x-24 && jx[q].x<= zombie_array[i].x+30 &&  jx[q].y>=zombie_array[i].y-24 && jx[q].y<zombie_array[i].y+26 &&jx[q].done==false && zombie_array[i].die==false )
         {
           zombie_array[i].die=true;
           var ncandy=new candy(zombie_array[i].x,zombie_array[i].y);
@@ -583,7 +582,6 @@ function redraw()
     }
     
     //       GAME OVER ? //
-     console.log(disp);
 
 
     if( ( zombie_array[i].x<hero.x+30 && zombie_array[i].x>hero.x-15 ) && zombie_array[i].y<hero.y+30 && zombie_array[i].die==false)
