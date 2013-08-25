@@ -2,11 +2,20 @@
 <html>
 <head>
 <title>F13 Game</title>
+<link href='http://fonts.googleapis.com/css?family=Creepster' rel='stylesheet' type='text/css'>
+<link href='http://fonts.googleapis.com/css?family=Sancreek' rel='stylesheet' type='text/css'>
 <style>
 .myCanvas
 {
 border:10px solid #40403A;
 position:relative;
+font-family: 'Creepster', cursive;
+}
+body
+{
+  font-family: 'Sancreek', cursive;
+  font-size: :48px;
+  text-shadow: 4px 4px 4px #aaa;
 }
 </style>
 </head>
@@ -422,7 +431,8 @@ function redraw()
 
  
   shop.clearRect(0,0,canvas.width,canvas.height);
-  shop.font = '18pt Calibri';
+  //shop.font = '18pt Calibri';
+  shop.font='Creepster'
   shop.fillStyle = 'black';
   shop.fillText(candycount,90,50);
   shop.fillText("nuke",90,100);
@@ -435,7 +445,8 @@ function redraw()
   ctx.drawImage(bb,0,0,500,471,0,0,500,500);
   /* ##########################*/
   /*  SCORING    */
-  shop.font = '18pt Calibri';
+  //shop.font = '18pt Calibri';
+  shop.font='Creepster'
   shop.fillStyle = 'black';
   shop.fillText("Score:  "+disp,90,200);
   /*                */
@@ -547,7 +558,7 @@ function redraw()
    }
   }
     if(Math.abs(zombie_array[i].x-nubomb.x)<25 &&Math.abs(zombie_array[i].y-nubomb.y)<25 && isnuke==true)
-  blaston=true;
+    blaston=true;
   }
 
   for(var q=1;q<jx.length;q=q+1) // Prinring jacks
