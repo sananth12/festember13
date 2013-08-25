@@ -9,13 +9,15 @@
 {
 border:10px solid #40403A;
 position:relative;
-font-family: 'Creepster', cursive;
+/*font-family: 'Creepster', cursive;*/
 }
 body
 {
   font-family: 'Sancreek', cursive;
-  font-size: :48px;
+  font-size: :200%;
+  color:white;
   text-shadow: 4px 4px 4px #aaa;
+  background-image: url('sprites/house.jpg');
 }
 </style>
 </head>
@@ -43,6 +45,7 @@ var bf=0;
 var ss;
 var xf=0;
 var ns;
+var house=new Image();
 var bs;
 var gun=new Array();
 var ammo=0;
@@ -431,8 +434,9 @@ function redraw()
 
  
   shop.clearRect(0,0,canvas.width,canvas.height);
-  //shop.font = '18pt Calibri';
-  shop.font='Creepster'
+  //shop.drawImage(house,0,0);
+  shop.font = '18pt Calibri';
+  //shop.font='Creepster'
   shop.fillStyle = 'black';
   shop.fillText(candycount,90,50);
   shop.fillText("nuke",90,100);
