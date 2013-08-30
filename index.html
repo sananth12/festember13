@@ -13,24 +13,22 @@ position:relative;
 }
 .table
 {
-  position: relative;
+  position: absolute;
+  top:50px;
+  left:550px;
 }
 body
 {
   font-family: 'Sancreek', cursive;
   font-size: :200%;
-  color:white;
+  color:black;
   text-shadow: 4px 4px 4px #aaa;
-  background-image: url('sprites/house.jpg');
 }
 </style>
 </head>
 <body onload="onload()"  onclick="getcandy()" onmousemove="get(event)">
 <canvas id="myCanvas" class="myCanvas" width="500" height="500" align="center"></canvas>
-<canvas id="cnvs" class="myCanvas" width="250" height="500" align="center"></canvas>
-<div id="table" name="table">
-
-</div> 
+ 
 <script type="text/javascript">
 var canvas = null,canvas2=null;
 var img = null,image=null,imgd=null,img2=null,img3=null;
@@ -143,9 +141,10 @@ function bullet()
   }
 bullet.prototype.shoot = function()
   {
+  ctx.strokeStyle = 'black'; 
+  ctx.fillStyle = 'red';  
   ctx.beginPath();
   ctx.arc(this.dx,this.dy,5,0,2*Math.PI);
-  ctx.fillStyle = 'red';
   ctx.fill();
   ctx.stroke();
   ctx.closePath();
@@ -154,6 +153,7 @@ bullet.prototype.shoot = function()
   ctx.fillStyle = 'orange';
   ctx.fill();
   ctx.stroke();
+  ctx.strokeStyle = 'black';
 
   this.dx+=10*this.ox/this.mag;
   this.dy+=10*this.oy/this.mag;
@@ -282,7 +282,7 @@ jack.prototype.fall = function()
   this.y=hero.y;
   this.img=new Image;
   this.radius=50;
-  this.img.src='sprites/bomb.jpg';
+  this.img.src='sprites/bomb.png';
    this.ns=0;
    }
 nuke.prototype.draw=function()
@@ -290,7 +290,7 @@ nuke.prototype.draw=function()
 if(this.ns==0)
 {this.x=hero.x;this.y=hero.y;
 }
-ctx.drawImage(this.img,0,0,228,210,this.x,this.y,25,25);
+ctx.drawImage(this.img,0,0,167,302,this.x,this.y,25,40);
 this.ns++; 
  }
 nuke.prototype.drop=function()
@@ -332,10 +332,9 @@ this.radius+=10;
 function onload()
 {
   mx=mx||-1; 
-  canvas2 = document.getElementById('cnvs');
-  shop = canvas2.getContext("2d");
-  canvas = document.getElementById('myCanvas');
+  canvas=document.getElementById("myCanvas");
   ctx = canvas.getContext("2d");
+  
   img = new Image();
   img.src = 'sprites/main.png';
   image=new Image();
@@ -386,6 +385,8 @@ function loaded() {
   {
     candy_array[i]=null;
     candycount+=1;
+    disp=SCORE();
+    
   }
   
   }
@@ -434,20 +435,14 @@ var q;
 
 function redraw()
  { 
- if(nubomb.radius>=1000)
+ if(nubomb.radius>=1000||nubomb.y>=2000 &&blaston==false)
  {
  blaston=false;
+  isnuke=false;
+ delete nubomb;
+ nubomb=new nuke();
  }
-
- 
-  shop.clearRect(0,0,canvas.width,canvas.height);
-  //shop.drawImage(house,0,0);
-  shop.font = '18pt Calibri';
-  //shop.font='Creepster'
-  shop.fillStyle = 'black';
-  shop.fillText(candycount,90,50);
-  shop.fillText("nuke",90,100);
-  ctx.fillStyle = '#FFFFFF';
+   ctx.fillStyle = '#FFFFFF';
   ctx.fillRect(0, 0, canvas.width, canvas.height);
 
   /* ########################## */
@@ -456,11 +451,27 @@ function redraw()
   ctx.drawImage(bb,0,0,500,471,0,0,500,500);
   /* ##########################*/
   /*  SCORING    */
-  //shop.font = '18pt Calibri';
-  shop.font='Creepster'
-  shop.fillStyle = 'black';
-  shop.fillText("Score:  "+disp,90,200);
-  /*                */
+  ctx.fillStyle = 'black';
+  ctx.fillRect(0, 0,500,35);
+  ctx.fillStyle = 'white';
+  ctx.font = '12pt Calibri';
+  ctx.fillText("Score:  "+disp,210,20);
+  ctx.drawImage(imgc,10,2,30,30);
+  ctx.fillText(" X "+candycount,40,20);
+  ctx.beginPath();
+  ctx.arc(420,17,10,0,2*Math.PI);
+  ctx.fillStyle = 'red';
+  ctx.fill();
+  ctx.stroke();
+  ctx.closePath();
+  ctx.beginPath();
+  ctx.arc(420,17,6,0,2*Math.PI);
+  ctx.fillStyle = 'orange';
+  ctx.fill();
+  ctx.stroke();
+  
+  ctx.fillStyle = 'white';  
+  ctx.fillText(" x "+ammo,430,20); 
   if(blaston==true)
  {nubomb.blast(100,500);
   }
@@ -523,7 +534,7 @@ function redraw()
   ////////// Drawing+creating zombies  -- Ananth -- //////////////////
   
   var probability=Math.floor((Math.random()*20)+1);
-  if(probability<5)
+  if(probability<(5+(disp/25)))
   {
     var temp=new zombie( Math.floor((Math.random()*450)+1),1);
     zombie_array.push(temp);
@@ -568,7 +579,7 @@ function redraw()
     zombie_array[i].draw();   
    }
   }
-    if(Math.abs(zombie_array[i].x-nubomb.x)<25 &&Math.abs(zombie_array[i].y-nubomb.y)<25 && isnuke==true)
+    if(Math.abs(zombie_array[i].x-nubomb.x)<25 &&Math.abs(zombie_array[i].y-nubomb.y)<25 && isnuke==true &&zombie_array[i].die!=true)
     blaston=true;
   }
 
@@ -615,6 +626,7 @@ function redraw()
              ctx.font = '18pt Rockwell';
             ctx.fillStyle = '#FFFFFF';
             ctx.fillText("GAME OVER.",canvas.width/2 -100,canvas.height/2 -50);
+            ctx.fillText("SCORE : "+disp,canvas.width/2 -100,canvas.height/2 );
             clearInterval(tt);
 
     }
@@ -654,7 +666,10 @@ function redraw()
   }
  function nukethem()
  {
+  if(candycount>5)
  isnuke=true;
+ else
+ alert('u need 25 candies');
  }
 </script><br/>
 Press a & d to move left/right. Press s to drop jack-lantern.shop for ammo and press space to shoot<br/>
