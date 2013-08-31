@@ -64,6 +64,8 @@ body
 <canvas id="myCanvas" class="myCanvas" width="500" height="500" align="center"></canvas>
  
 <script type="text/javascript">
+var beg= confirm("Start game?");
+if(beg==true)
 (function() {
 var canvas = null,canvas2=null;
 var img = null,image=null,imgd=null,img2=null,img3=null;
@@ -139,6 +141,8 @@ frame:0,
 left:function()
   {
   hero.x-=3;
+  if(hero.x<=0)
+    hero.x=499;
   hero.frame+=1;
   if(hero.frame>=2)
   hero.frame=0;
@@ -146,6 +150,8 @@ left:function()
 right:function()
   {
   hero.x+=3;
+  if(hero.x>=500)
+    hero.x=0;
   hero.frame+=1;
   if(hero.frame>=2)
   hero.frame=0;
