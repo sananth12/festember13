@@ -60,10 +60,11 @@ body
 }
 </style>
 </head>
-<body onload="onload()"  onclick="getcandy()" onmousemove="get(event)">
+<body>
 <canvas id="myCanvas" class="myCanvas" width="500" height="500" align="center"></canvas>
  
 <script type="text/javascript">
+(function() {
 var canvas = null,canvas2=null;
 var img = null,image=null,imgd=null,img2=null,img3=null;
 var isnuke=false;
@@ -89,6 +90,35 @@ var bs;
 var gun=new Array();
 var ammo=0;
 var candycount=0;
+/*//*/
+
+ mx=mx||-1; 
+  canvas=document.getElementById("myCanvas");
+  ctx = canvas.getContext("2d");
+  
+  img = new Image();
+  img.src = 'sprites/main.png';
+  image=new Image();
+  image.src='sprites/attack.png';
+  imgd= new Image();
+  imgd.src = 'sprites/FlyingBlueDragon.png';
+  imgb=new Image();
+  imgb.src='sprites/bomb.jpg'
+  imgc=new Image();
+imgc.src='sprites/candy1.png';
+  img2=new Image();
+  img2.src = 'sprites/flame2.png';
+  
+  
+  loaded();
+   a=new dragon();
+//  a.draw();
+ // a.createfireball();
+
+  xf=0;
+
+
+//*/
 function candy(x,y)
 {
 this.ncx=x;
@@ -120,8 +150,7 @@ right:function()
   if(hero.frame>=2)
   hero.frame=0;
   }
-}
-
+};
 ///////////// Dragon //////////
 function dragon(){
   this.x=350;
@@ -230,14 +259,15 @@ zombie.prototype.update = function()
    {  
       if(this.die==false)
       {
-        if(this.walk=='right')
-        this.x+=2;
+         if(this.walk=='right')
+        this.x+=2+(disp/20)%15;
         
         if(this.walk=='left')
-        this.x-=2;
+        this.x-=2+(disp/20)%15;
         
         if(this.walk=='up')
-        this.y-=2;
+        this.y-=2+(disp/20)%15;
+        
         
         this.fps++;
       }
@@ -395,13 +425,16 @@ imgc.src='sprites/candy1.png';
 function loaded() {
   imageReady = true;
   d=3;
+  
   tt=setInterval(redraw,100);
 }
 ///////////////
  function getammo()
   {
-  if(candycount>0)
+  if(candycount>0 && Math.abs(mx-207)<52 && Math.abs(my-560)<23)
   {
+     //alert(mx);
+     //alert(my);
   ammo+=candycount;
   candycount=0;
   
@@ -466,16 +499,19 @@ window.addEventListener("keyup",function(){ d=3;});
 var q;
 
 ////////////////////////// REDRAW **********************
-
+nubomb=new nuke();
 function redraw()
  { 
- if(nubomb.radius>=1000||nubomb.y>=2000 &&blaston==false)
+  
+  if(nubomb){
+ if(nubomb.radius>=500||nubomb.y>=2000 &&blaston==false)
  {
  blaston=false;
   isnuke=false;
  delete nubomb;
  nubomb=new nuke();
  }
+}
    ctx.fillStyle = '#FFFFFF';
   ctx.fillRect(0, 0, canvas.width, canvas.height);
 
@@ -592,7 +628,7 @@ function redraw()
   for(var i=0;i<zombie_array.length ;i++)
   { 
   var v=0;
-  if(zombie_array[i].die != true)
+  if(zombie_array[i].die != true ) 
   { if(zombie_array[i].x*zombie_array[i].x+zombie_array[i].y*zombie_array[i].y-nubomb.radius*nubomb.radius<0 && blaston==true)
  { zombie_array[i].die=true;}
   for(var t=1;t<=bs;t++)
@@ -612,7 +648,8 @@ function redraw()
   zombie_array[i].update();
     zombie_array[i].draw();   
    }
-  }
+  } 
+    if(nubomb)
     if(Math.abs(zombie_array[i].x-nubomb.x)<25 &&Math.abs(zombie_array[i].y-nubomb.y)<25 && isnuke==true &&zombie_array[i].die!=true)
     blaston=true;
   }
@@ -700,14 +737,26 @@ function redraw()
   }
  function nukethem()
  {
-  if(candycount>5)
- isnuke=true;
- else
+  
+  if(candycount>5 && Math.abs(mx-307)<52 && Math.abs(my-560)<23)
+  isnuke=true;
+ else if( Math.abs(mx-307)<52 && Math.abs(my-560)<23)
  alert('u need 25 candies');
  }
+
+ window.addEventListener("click",function(event){
+  get(event);
+  getcandy();
+  getammo();
+  nukethem();
+  
+}); 
+window.addEventListener("mousemove",function(event){get(event);});
+}());
+
 </script><br/>
-<input type="button" onclick="getammo()" class="red" id="red" value="Ammo"/>
-<input type="button" onclick="nukethem()" class="red" value="Bomb"/>
+<input type="button"  class="red" id="red" value="Ammo"/>
+<input type="button"  class="red" value="Bomb"/>
 <br />
 Press a & d to move left/right. Press s to drop jack-lantern.shop for ammo and press space to shoot<br/>
 As of now,works only in Chrome 
