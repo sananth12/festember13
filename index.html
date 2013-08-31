@@ -100,25 +100,12 @@ var candycount=0;
   
   img = new Image();
   img.src = 'sprites/main.png';
-  image=new Image();
-  image.src='sprites/attack.png';
-  imgd= new Image();
-  imgd.src = 'sprites/FlyingBlueDragon.png';
   imgb=new Image();
-  imgb.src='sprites/bomb.jpg'
+  imgb.src='sprites/bomb.png'
   imgc=new Image();
 imgc.src='sprites/candy1.png';
-  img2=new Image();
-  img2.src = 'sprites/flame2.png';
-  
   
   loaded();
-   a=new dragon();
-//  a.draw();
- // a.createfireball();
-
-  xf=0;
-
 
 //*/
 function candy(x,y)
@@ -157,35 +144,6 @@ right:function()
   hero.frame=0;
   }
 };
-///////////// Dragon //////////
-function dragon(){
-  this.x=350;
-  this.y=250;
-  this.frame=0,
-  this.draw=function()
-    {
-    //ctx.drawImage(imgd,96*this.frame,95,95,95,this.x,this.y,75,75);
-    }
-  this.move=function()
-    {
-        this.x-=5;
-    this.y+=5;
-    //ctx.drawImage(imgd,96*this.frame,95,95,95,this.x,this.y,75,75);
-        }
-  }
-dragon.prototype.createfireball = function()
-  {
-  this.fx=this.x-15;
-  this.fy=this.y-15;
-  ctx.drawImage(img2,0,0,37,98,this.fx,this.fy,25,25);  
-  };
-dragon.prototype.movefireball = function()
-  {
-  this.fx-=10;
-    this.fy-=10;
-    ctx.drawImage(img2,0,0,37,98,this.fx,this.fy,25,25);
-  };
-
 
 //////////////// Bullet ///////
 function bullet()
@@ -266,13 +224,13 @@ zombie.prototype.update = function()
       if(this.die==false)
       {
          if(this.walk=='right')
-        this.x+=2+(disp/20)%15;
+        this.x+=2+(disp/30)%25;
         
         if(this.walk=='left')
-        this.x-=2+(disp/20)%15;
+        this.x-=2+(disp/30)%25;
         
         if(this.walk=='up')
-        this.y-=2+(disp/20)%15;
+        this.y-=2+(disp/30)%25;
         
         
         this.fps++;
@@ -407,16 +365,11 @@ function onload()
   
   img = new Image();
   img.src = 'sprites/main.png';
-  image=new Image();
-  image.src='sprites/attack.png';
-  imgd= new Image();
-  imgd.src = 'sprites/FlyingBlueDragon.png';
   imgb=new Image();
   imgb.src='sprites/bomb.jpg'
   imgc=new Image();
 imgc.src='sprites/candy1.png';
-  img2=new Image();
-  img2.src = 'sprites/flame2.png';
+  
   nubomb=new nuke();
  
  img2.onload=loaded();
@@ -467,6 +420,7 @@ function loaded() {
  
  }
 //////////////
+var rain=0;
 window.addEventListener("keypress", function(event){
   
   var key=event.keyCode;
@@ -484,20 +438,34 @@ window.addEventListener("keypress", function(event){
     hero.right();
     d=2;
     }
-    if( (key==32 && d==2 )|| (key==32 &&d==1) )
+    if( (key==115 && d==2 )|| (key==115 &&d==1) )
     {
       // WEAPONS
-      weapon=1;
-      hero.axe=0;
-      dir= ( d==2?1:-1);
-      hero.axe_x=hero.x + (28*dir);
+       rain++;
+       if(rain%108==0){
+       
+       t=++t||1;
+       jx[t]=new jack(t);
+       }
+       if(d==1)
+      {
+      hero.left();
+      
+      }
+      if(d==2)
+      {
+      hero.right();
+      d=2;
+      }
     }
+
   //jack 
   if(key==115)
     {
+      if(rain%4==0){
     t=++t||1;
   jx[t]=new jack(t);
-
+  }
     }
   });
 
@@ -592,7 +560,6 @@ function redraw()
   /////////////// 
   if (imageReady)
   {  
-    a.move();
     //a.movefireball();
     if(d==1)
     {
@@ -702,8 +669,8 @@ function redraw()
              ctx.fillRect(0, 0, canvas.width, canvas.height);
              ctx.font = '18pt Rockwell';
             ctx.fillStyle = '#FFFFFF';
-            ctx.fillText("GAME OVER.",canvas.width/2 -100,canvas.height/2 -50);
-            ctx.fillText("SCORE : "+disp,canvas.width/2 -100,canvas.height/2 );
+            ctx.fillText("GAME OVER.",canvas.width/2 -80,canvas.height/2 -50);
+            ctx.fillText("SCORE : "+disp,canvas.width/2 -80,canvas.height/2 );
             clearInterval(tt);
 
     }
