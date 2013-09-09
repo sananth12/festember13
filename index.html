@@ -2,7 +2,7 @@
 <html>
 <head>
 <title>F13 Game</title>
-<link href='http://fonts.googleapis.com/css?family=Creepster' rel='stylesheet' type='text/css'>
+<!--link href='http://fonts.googleapis.com/css?family=Creepster' rel='stylesheet' type='text/css'-->
 <link href='http://fonts.googleapis.com/css?family=Sancreek' rel='stylesheet' type='text/css'>
 <style>
 .myCanvas
@@ -65,8 +65,10 @@ body
  
 <script type="text/javascript">
 var beg= confirm("Start game?");
+
 if(beg==true)
 (function() {
+
 var canvas = null,canvas2=null;
 var img = null,image=null,imgd=null,img2=null,img3=null;
 var isnuke=false;
@@ -92,6 +94,7 @@ var bs;
 var gun=new Array();
 var ammo=0;
 var candycount=0;
+var begin_game=false;
 /*//*/
 
  mx=mx||-1; 
@@ -129,7 +132,7 @@ left:function()
   {
   hero.x-=3;
   if(hero.x<=0)
-    hero.x=499;
+    hero.x=0;
   hero.frame+=1;
   if(hero.frame>=2)
   hero.frame=0;
@@ -137,8 +140,8 @@ left:function()
 right:function()
   {
   hero.x+=3;
-  if(hero.x>=500)
-    hero.x=0;
+  if(hero.x>=485)
+    hero.x=485;
   hero.frame+=1;
   if(hero.frame>=2)
   hero.frame=0;
@@ -357,6 +360,14 @@ this.begy=this.begy||this.y;
 this.radius+=10;
     }
   ///////////////
+
+function ignite()
+{
+   begin_game=true;
+   tt=setInterval(redraw,100);
+}
+
+
 function onload()
 {
   mx=mx||-1; 
@@ -384,7 +395,15 @@ imgc.src='sprites/candy1.png';
 function loaded() {
   imageReady = true;
   d=3;
-  
+
+  /*
+
+   Instructions image and start button*/
+   ctx.fillStyle="balck";
+   ctx.fillText("Start game",canvas.width/2 -80,canvas.height/2 -50);
+     
+  /**/
+  if(begin_game)
   tt=setInterval(redraw,100);
 }
 ///////////////
@@ -421,9 +440,11 @@ function loaded() {
  }
 //////////////
 var rain=0;
+var run=false;
 window.addEventListener("keypress", function(event){
   
   var key=event.keyCode;
+  run=false;
   if(key==32)
   {
    bf=1;
@@ -442,15 +463,10 @@ window.addEventListener("keypress", function(event){
     {
       // WEAPONS
        rain++;
-       if(rain%108==0){
-       
-       t=++t||1;
-       jx[t]=new jack(t);
-       }
+       run=true;
        if(d==1)
       {
       hero.left();
-      
       }
       if(d==2)
       {
@@ -462,10 +478,17 @@ window.addEventListener("keypress", function(event){
   //jack 
   if(key==115)
     {
-      if(rain%4==0){
-    t=++t||1;
-  jx[t]=new jack(t);
-  }
+  
+       if(rain%8==0 && run==true){
+       console.log(rain);
+       t=++t||1;
+       jx[t]=new jack(t);
+       }
+       if(run==false)
+       {t=++t||1;
+       jx[t]=new jack(t);
+       } 
+       
     }
   });
 
@@ -722,9 +745,14 @@ function redraw()
   getcandy();
   getammo();
   nukethem();
+  if(begin_game==false)
+    ignite();
   
 }); 
-window.addEventListener("mousemove",function(event){get(event);});
+window.addEventListener("mousemove",function(event){
+  get(event);
+ 
+});
 }());
 
 </script><br/>
