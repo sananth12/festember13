@@ -60,16 +60,21 @@ body
 }
 </style>
 </head>
-<body>
+<body onload="intro()">
 <canvas id="myCanvas" class="myCanvas" width="500" height="500" align="center"></canvas>
  
 <script type="text/javascript">
-var beg= confirm("Start game?");
-
-if(beg==true)
+function intro()
+{
+   var canv=document.getElementById("myCanvas");
+   var cty=canv.getContext("2d");
+   var bbb=new Image(); 
+   bbb.src="sprites/info2.png";
+   cty.drawImage(bbb,0,0,500,500,0,0,502,500);
+}
 (function() {
 
-var canvas = null,canvas2=null;
+var canvas = null;
 var img = null,image=null,imgd=null,img2=null,img3=null;
 var isnuke=false;
 var blaston=false;
@@ -104,7 +109,7 @@ var begin_game=false;
   img = new Image();
   img.src = 'sprites/main.png';
   imgb=new Image();
-  imgb.src='sprites/bomb.png'
+  imgb.src='sprites/bomb2.png'
   imgc=new Image();
 imgc.src='sprites/candy1.png';
   
@@ -227,13 +232,13 @@ zombie.prototype.update = function()
       if(this.die==false)
       {
          if(this.walk=='right')
-        this.x+=2+(disp/30)%25;
+        this.x+=2+(disp/50)%25;
         
         if(this.walk=='left')
-        this.x-=2+(disp/30)%25;
+        this.x-=2+(disp/50)%25;
         
         if(this.walk=='up')
-        this.y-=2+(disp/30)%25;
+        this.y-=2+(disp/50)%25;
         
         
         this.fps++;
@@ -313,7 +318,7 @@ jack.prototype.fall = function()
   this.y=hero.y;
   this.img=new Image;
   this.radius=50;
-  this.img.src='sprites/bomb.png';
+  this.img.src='sprites/bomb2.png';
    this.ns=0;
    }
 nuke.prototype.draw=function()
@@ -399,16 +404,21 @@ function loaded() {
   /*
 
    Instructions image and start button*/
-   ctx.fillStyle="balck";
-   ctx.fillText("Start game",canvas.width/2 -80,canvas.height/2 -50);
+  
+  
      
-  /**/
+  /*
+  */
   if(begin_game)
   tt=setInterval(redraw,100);
 }
 ///////////////
  function getammo()
   {
+  if(candycount<1 && Math.abs(mx-207)<52 && Math.abs(my-560)<23)
+  {
+     alert("You have no candies left!");
+  }
   if(candycount>0 && Math.abs(mx-207)<52 && Math.abs(my-560)<23)
   {
      //alert(mx);
@@ -417,6 +427,7 @@ function loaded() {
   candycount=0;
   
   }
+
   }
  function getcandy()
  {
@@ -480,7 +491,7 @@ window.addEventListener("keypress", function(event){
     {
   
        if(rain%8==0 && run==true){
-       console.log(rain);
+       //console.log(rain);
        t=++t||1;
        jx[t]=new jack(t);
        }
@@ -558,7 +569,7 @@ function redraw()
     }
     else
       {
-        
+       
      }
    }
    
@@ -737,7 +748,7 @@ function redraw()
   if(candycount>5 && Math.abs(mx-307)<52 && Math.abs(my-560)<23)
   isnuke=true;
  else if( Math.abs(mx-307)<52 && Math.abs(my-560)<23)
- alert('u need 25 candies');
+ alert('u need 5 candies');
  }
 
  window.addEventListener("click",function(event){
@@ -759,7 +770,10 @@ window.addEventListener("mousemove",function(event){
 <input type="button"  class="red" id="red" value="Ammo"/>
 <input type="button"  class="red" value="Bomb"/>
 <br />
-Press a & d to move left/right. Press s to drop jack-lantern.shop for ammo and press space to shoot<br/>
-As of now,works only in Chrome 
+Press a & d to move left/right.<br/>
+Press s to drop jack-lantern.<br />
+Buy ammo, aim using mouse and press space to shoot<br/>
+Buy bomb to kill multiple zombies in one stroke.<br />
+Works best in Chrome. 
 </body>
 </html>
